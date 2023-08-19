@@ -31,3 +31,9 @@ py_binary(
     requirement("more-itertools"),
   ]
 )
+py_binary(
+  name = "solve05",
+  srcs = ["solve05.py"],
+  args = ["$(location :data/05.txt)"],
+  data = ['data/05.txt'],
+)
