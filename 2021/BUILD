@@ -37,3 +37,9 @@ py_binary(
   args = ["$(location :data/05.txt)"],
   data = ['data/05.txt'],
 )
+py_binary(
+  name = "solve06",
+  srcs = ["solve06.py"],
+  args = ["$(location :data/06.txt)"],
+  data = ['data/06.txt'],
+)
