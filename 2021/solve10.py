@@ -1,8 +1,8 @@
 """Solution - Syntax Scoring
 
 Link: https://adventofcode.com/2021/day/10 
-Part 1: ???
-Part 2: ???
+Part 1: 318099
+Part 2: 2389738699
 """
 
 import argparse
