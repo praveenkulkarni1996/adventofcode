@@ -80,3 +80,10 @@ py_binary(
   args = ["$(location :data/11.txt)"],
   data = ['data/11.txt'],
 )
+
+py_binary(
+  name = "solve12",
+  srcs = ["solve12.py"],
+  args = ["$(location :data/12.txt)"],
+  data = ['data/12.txt'],
+)
