@@ -26,39 +26,42 @@ MATCHING = {
 }
 
 
-def syntax(line: str) -> int:
-    SCORE = {')': 3, ']': 57, '}': 1197, '>': 25137}
+def analyse(line: str) -> tuple[str, str | list[str]]:
     stack = []
     for token in line:
         if token in MATCHING:
             if not stack or stack.pop() != MATCHING[token]:
-                return SCORE[token]
+                return ('syntax error', token)
         else:
             stack.append(token)
-    return 0
+    return ('autocomplete', stack)
 
 
-def autocomplete(line: str) -> int:
-    stack = []
-    for token in line:
-        if token in MATCHING:
-            if not stack or stack.pop() != MATCHING[token]:
-                return 0
-        else:
-            stack.append(token)
-    SCORE = {'(': 1, '[': 2, '{': 3, '<': 4}
-    ans = 0
-    for token in reversed(stack):
-        ans = (ans * 5) + SCORE[stack.pop()]
-    return ans
+SYNTAX_SCORES = {')': 3, ']': 57, '}': 1197, '>': 25137}
+
+
+def autoscore(tokens: list[str]) -> int:
+    tokens = ''.join(reversed(tokens))
+    tokens = tokens.replace('(', '1')
+    tokens = tokens.replace('[', '2')
+    tokens = tokens.replace('{', '3')
+    tokens = tokens.replace('<', '4')
+    return int(tokens, base=5)
 
 
 def main(args):
     lines = parse(args.datafile)
-    total = sum(syntax(line) for line in lines)
-    autoscores = [score for line in lines if (score := autocomplete(line))]
-    median = statistics.median(autoscores)
-    print(median)
+    statuses = [analyse(line) for line in lines]
+    part1: int = sum([
+        SYNTAX_SCORES[tok] for status, tok in statuses
+        if status == 'syntax error'
+    ])
+    part2: int = statistics.median([
+        autoscore(tokens) for status, tokens in statuses
+        if status == 'autocomplete'
+    ])
+    print(f'Part 1: {part1}')
+    print(f'Part 2: {part2}')
 
 
 if __name__ == '__main__':
