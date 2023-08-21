@@ -49,16 +49,19 @@ def flash(g: Grid) -> int:
     for row, rowvalues in enumerate(g):
         for col, _ in enumerate(rowvalues):
             g[row][col] += 1
+
     # Find all octopuses that are initially flashable.
     for row, rowvalues in enumerate(g):
         for col, value in enumerate(rowvalues):
             if g[row][col] > 9:
                 f[row][col] = True
                 q.append((row, col))
+
     # Flash all octopodes
     while q:
         row, col = q.popleft()
         flash(row, col)
+
     # Reset the values of all the octopodes.
     for row, rowvalues in enumerate(g):
         for col, _ in enumerate(rowvalues):
