@@ -19,10 +19,6 @@ Grid: TypeAlias = list[list[int]]
 GRID_LENGTH = 10
 
 
-def add(g: Grid) -> Grid:
-    return [[value + 1 for value in row] for row in g]
-
-
 def neighbours(row: int, col: int) -> list[tuple[int, int]]:
     nbrs = [
         (row - 1, col - 1),
@@ -49,20 +45,21 @@ def flash(g: Grid) -> int:
                 f[nrow][ncol] = True
                 q.append((nrow, ncol))
 
+    # Add one to all octopodes.
     for row, rowvalues in enumerate(g):
         for col, _ in enumerate(rowvalues):
             g[row][col] += 1
-
+    # Find all octopuses that are initially flashable.
     for row, rowvalues in enumerate(g):
         for col, value in enumerate(rowvalues):
             if g[row][col] > 9:
                 f[row][col] = True
                 q.append((row, col))
-
+    # Flash all octopodes
     while q:
         row, col = q.popleft()
         flash(row, col)
-
+    # Reset the values of all the octopodes.
     for row, rowvalues in enumerate(g):
         for col, _ in enumerate(rowvalues):
             g[row][col] = 0 if f[row][col] else g[row][col]
