@@ -47,14 +47,14 @@ def parse(datafile: str) -> tuple[Polymer, RuleBook]:
 
 
 def polymerize(polymer: Polymer, book: RuleBook) -> Polymer:
-    newpolymer = copy.deepcopy(polymer)
+    new: Polymer = copy.deepcopy(polymer)
     for reactant, product in book.items():
         items = polymer.pairs[reactant]
-        newpolymer.chars[product] += items
-        newpolymer.pairs[reactant[0] + product] += items
-        newpolymer.pairs[product + reactant[1]] += items
-        newpolymer.pairs[reactant] -= items
-    return newpolymer
+        new.chars[product] += items
+        new.pairs[reactant[0] + product] += items
+        new.pairs[product + reactant[1]] += items
+        new.pairs[reactant] -= items
+    return new
 
 
 def simulate(epochs: int, polymer: Polymer, book: RuleBook) -> Polymer:
