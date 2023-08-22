@@ -101,3 +101,13 @@ py_binary(
   args = ["$(location :data/14.txt)"],
   data = ['data/14.txt'],
 )
+
+py_binary(
+  name = "solve15",
+  srcs = ["solve15.py"],
+  args = ["$(location :data/15.txt)"],
+  data = ['data/15.txt'],
+  deps = [
+    requirement("more-itertools"),
+  ]
+)
