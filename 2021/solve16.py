@@ -9,8 +9,9 @@ import argparse
 import collections
 import dataclasses
 import enum
-import pathlib
 import math
+import operator
+import pathlib
 
 parser = argparse.ArgumentParser()
 parser.add_argument('datafile', type=pathlib.Path)
@@ -122,14 +123,11 @@ def solve(p: Packet) -> int:
                 case Opcode.MIN:
                     return min(values)
                 case Opcode.GREATER:
-                    a, b = values
-                    return a > b
+                    return operator.gt(*values)
                 case Opcode.LESSER:
-                    a, b = values
-                    return a < b
+                    return operator.lt(*values)
                 case Opcode.EQUAL:
-                    a, b = values
-                    return a == b
+                    return operator.eq(*values)
     raise ValueError
 
 
