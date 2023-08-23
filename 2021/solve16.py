@@ -65,12 +65,12 @@ def integer(bs: collections.deque, nbits: int) -> int:
 
 
 def litvalue(bs: collections.deque) -> int:
-    valuebits = []
+    value = 0
     while True:
-        more = multipop(bs, 1) == '1'
-        valuebits.append(multipop(bs, 4))
+        more = integer(bs, 1)
+        value = (value << 4) | integer(bs, 4)
         if not more: break
-    return int(''.join(valuebits), base=2)
+    return value
 
 
 def allpackets(bs: collections.deque) -> list[Packet]:
