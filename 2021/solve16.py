@@ -49,12 +49,13 @@ class Operation:
 Packet = Literal | Operation
 
 
-def bitstring(datafile: str) -> str:
+def bitstring(datafile: str) -> collections.deque:
     with open(datafile) as f:
         hexstring = f.read().strip()
     required_chars = len(hexstring) * 4
     binary = bin(int(hexstring, base=16))[2:]
-    return binary.zfill(required_chars)
+    binary = binary.zfill(required_chars)
+    return collections.deque(list(binary))
 
 
 def multipop(bs: collections.deque, nbits: int) -> str:
@@ -133,10 +134,9 @@ def solve(p: Packet) -> int:
 
 def main(args):
     bs = bitstring(args.datafile)
-    bs = collections.deque(list(bs))
-    p = packet(bs)
-    print('Part 1:', sumversion(p))
-    print('Part 2:', solve(p))
+    root = packet(bs)
+    print('Part 1:', sumversion(root))
+    print('Part 2:', solve(root))
 
 
 if __name__ == '__main__':
