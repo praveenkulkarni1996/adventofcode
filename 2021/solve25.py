@@ -7,7 +7,6 @@ Part 2: Requires the completion of all other problems.
 import argparse
 import copy
 import pathlib
-import textwrap
 
 parser = argparse.ArgumentParser()
 parser.add_argument('datafile', type=pathlib.Path)
