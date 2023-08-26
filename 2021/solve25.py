@@ -11,13 +11,15 @@ import pathlib
 parser = argparse.ArgumentParser()
 parser.add_argument('datafile', type=pathlib.Path)
 
+OceanFloor = list[list[str]]
 
-def parse(datafile: str) -> list[list[str]]:
+
+def parse(datafile: str) -> OceanFloor:
     with open(datafile) as f:
         return [list(line.strip()) for line in f]
 
 
-def east(g: list[list[str]]):
+def east(g: OceanFloor):
     width = len(g[0])
     for rowvalues in g:
         for col, value in enumerate(rowvalues):
@@ -34,7 +36,7 @@ def east(g: list[list[str]]):
             g[row][col] = '.' if g[row][col] == '*' else g[row][col]
 
 
-def south(g: list[list[str]]):
+def south(g: OceanFloor):
     height = len(g)
     width = len(g[0])
     for row in range(height):
@@ -52,14 +54,14 @@ def south(g: list[list[str]]):
             g[row][col] = '.' if g[row][col] == '*' else g[row][col]
 
 
-def step(g: list[list[str]]) -> bool:
+def step(g: OceanFloor) -> bool:
     before = copy.deepcopy(g)
     east(g)
     south(g)
     return g != before
 
 
-def stoppage(g: list[list[str]]) -> int:
+def stoppage(g: OceanFloor) -> int:
     counts = 1
     while step(g):
         counts += 1
@@ -67,7 +69,7 @@ def stoppage(g: list[list[str]]) -> int:
 
 
 def main(args):
-    grid = parse(args.datafile)
+    grid: OceanFloor = parse(args.datafile)
     answer = stoppage(grid)
     print(f'Part 1: {answer}')
 
