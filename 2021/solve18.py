@@ -11,7 +11,6 @@ import dataclasses
 import math
 import pathlib
 import functools
-import itertools
 
 parser = argparse.ArgumentParser()
 parser.add_argument('datafile', type=pathlib.Path)
@@ -103,8 +102,7 @@ def magnitude(sfn: SnailFish) -> int:
 
 
 def max_magnitude(nums: list[SnailFish]) -> int:
-    doublets = itertools.permutations(nums, 2)
-    return max(magnitude(add(a, b)) for a, b in doublets)
+    return max(magnitude(add(a, b)) for a in nums for b in nums if a is not b)
 
 
 def main(args):
