@@ -124,6 +124,13 @@ py_binary(
 )
 
 py_binary(
+  name = "solve18",
+  srcs = ["solve18.py"],
+  args = ["$(location :data/18.txt)"],
+  data = ['data/18.txt'],
+)
+
+py_binary(
   name = "solve25",
   srcs = ["solve25.py"],
   args = ["$(location :data/25.txt)"],
