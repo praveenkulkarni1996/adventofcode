@@ -44,15 +44,15 @@ def throw(rolls3 : list[tuple[int, int]]) -> int:
     throws = max(roll[0] for roll in rolls3)
     return (sum(steps), throws)
 
-def simulate(a, b):
+def simulate(a: Player, b: Player) -> int:
     dice = enumerate(itertools.count(1), start=1)
     dice3 = more_itertools.chunked(dice, 3)
-    for curr, other in itertools.cycle(((a, b), (b, a))):
+    for curr, opponent in itertools.cycle(((a, b), (b, a))):
         if not is_winner(curr):
             steps, throws = throw(next(dice3))
             move(player=curr, steps=steps)
             if is_winner(curr):
-                return throws * other.score
+                return throws * opponent.score
 
 
 def main(args):
