@@ -2,11 +2,13 @@
 
 Link: https://adventofcode.com/2021/day/21 
 Part 1: 513936
-Part 2: ???
+Part 2: 105619718613031
 """
 
 import argparse
+import collections
 import dataclasses
+import functools
 import itertools
 import pathlib
 
@@ -14,6 +16,29 @@ import more_itertools
 
 parser = argparse.ArgumentParser()
 parser.add_argument('datafile', type=pathlib.Path)
+
+UNIVERSE_ROLLS = collections.Counter([
+    a + b + c 
+    for a in range(1, 4)
+    for b in range(1, 4)
+    for c in range(1, 4)
+])
+
+
+@functools.cache
+def count(score: int, pos: int, otherscore: int, otherpos: int) -> int:
+    assert 0 <= score < 21
+    if otherscore >= 21:
+        return (0, 1)
+    total_p1 = 0
+    total_p2 = 0
+    for steps, universe in UNIVERSE_ROLLS.items():
+        new_pos = ((pos + steps - 1) % 10) + 1
+        new_score = score + new_pos
+        p2wins, p1wins = count(otherscore, otherpos, new_score, new_pos)
+        total_p1 += universe * p1wins
+        total_p2 += universe * p2wins
+    return total_p1, total_p2
 
 
 def parse(datafile: str):
@@ -59,8 +84,11 @@ def main(args):
     pos1, pos2 = parse(args.datafile)
     p1 = Player(score=0, position=pos1)
     p2 = Player(score=0, position=pos2)
-    answer = simulate(p1, p2)
-    print(f'Part 1: {answer}')
+    part1 = simulate(p1, p2)
+    print(f'Part 1: {part1}')
+    part2 = max(count(score=0, pos=pos1, otherscore=0, otherpos=pos2))
+    print(f'Part 2: {part2}')
+
 
 
 if __name__ == '__main__':
